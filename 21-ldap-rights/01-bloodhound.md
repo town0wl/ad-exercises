@@ -40,9 +40,9 @@ MATCH (c:Computer) WHERE c.name in ["S1.BANK.LOCAL","S2.BANK.LOCAL"] SET c.owned
 ![case1-1](./images/case1-1.jpg)
 
 Здесь два GenericAll (BadBlood генерит только GenericAll) на учетки компов и 1 GenericAll на контейнер User.  
-GenericAll на компьтеры наиболее удобно использовать для развития доступа с помощью вариантов:
+GenericAll на компьютеры наиболее удобно использовать для развития доступа с помощью вариантов:
 - Получение пароля LAPS или GMSA (если используется)
-- Shadow Credentials (для доменов с PKINIT, т.е. где KDC >= Windows Server 2016)
+- Shadow Credentials (для доменов с поддержкой msDS-KeyCredentialLink, т.е. где KDC >= Windows Server 2016)
 - RBCD takeover для более старых доменов
 
 GenericAll на контейнер User использовать не получится. Для дальнейшего исследования можно удалить (правой кнопкой, Delete Node) его из базы объектов (восстановить можно будет повторной загрузкой того же zip) и перезапустить запрос:

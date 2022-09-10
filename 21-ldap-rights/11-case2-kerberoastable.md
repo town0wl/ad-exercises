@@ -26,7 +26,7 @@ $krb5tgs$23$*SANFORD_KIDD$ORG.LOCAL$org.local/SANFORD_KIDD*$34db2e383fd619c83e46
 
 ## Первый шаг - GenericAll на аккаунт пользователя
 Варианты:
-- Shadow Credentials (для доменов с PKINIT, т.е. где KDC >= Windows Server 2016)
+- Shadow Credentials (для доменов с поддержкой msDS-KeyCredentialLink, т.е. где KDC >= Windows Server 2016)
 - Установить dontreqpreauth для AS-REP Roasting, затем установить обратно
 - Создать SPN и использовать его для Kerberoasting, затем удалить
 - Переустановить пароль
@@ -138,7 +138,7 @@ adm:des-cbc-md5:d5575bdc83f47340
 
 ## RBCD Takeover
 
-Вместо получения NTLM-хеша при наличии GenericAll на учетные записи компьютеров можно провести атаку RBCD Takeover, что особенно актуально для доменов, где еще не поддерживается PKINIT (msDS-KeyCredentialLink, т.е. shadow creds нельзя использовать).  
+Вместо получения NTLM-хеша при наличии GenericAll на учетные записи компьютеров можно провести атаку RBCD Takeover, что особенно актуально для доменов, где еще не поддерживается msDS-KeyCredentialLink, т.е. shadow creds нельзя использовать.  
 Первым делом нам нужен аккаунт, который мы будем прописывать в RBCD-делегирование (msDS-AllowedToActOnBehalfOfOtherIdentity). В данном случае есть уже скомпрометированный FSRWLPT1000003$, но часто бывает нужно создать новый. Т.к. по умолчанию SeMachineAccountPrivilege (Add workstations to domain) предоставлено S-1-5-11 (Authenticated Users) и ms-DS-MachineAccountQuota = 10, рядовой пользователь домена может создать до 10 машинных учетных записей. Можно использовать, например, импакет или ldap_shell:
 ```
 addcomputer.py -computer-name 'SHUTDOWN$' -computer-pass 'SomePassword' -dc-host $DomainController -domain-netbios $DOMAIN 'DOMAIN\anonymous:anonymous'
